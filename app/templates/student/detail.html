@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ student.name }} &middot; College ERP Clone{% endblock %}
+{% block content %}
+  <h1>{{ student.name }}</h1>
+  <p class="nav-links">
+    <a href="{{ url_for('main.transcript', student_id=student.id) }}">Full transcript</a>
+  </p>
+
+  <div class="card">
+    <p><strong>Roll number:</strong> {{ student.roll_number }}</p>
+    <p><strong>Department:</strong> {{ student.department }}</p>
+    <p><strong>Year:</strong> {{ student.year }}</p>
+    <p><strong>CGPA:</strong> {{ transcript.gpa }}</p>
+  </div>
+
+  <h2>Enrollments &amp; grades</h2>
+  <div class="card">
+    {% if transcript.rows %}
+      <table>
+        <thead>
+          <tr><th>Semester</th><th>Course</th><th>Credits</th><th>Marks</th><th>Grade</th></tr>
+        </thead>
+        <tbody>
+          {% for row in transcript.rows %}
+            <tr>
+              <td>{{ row.semester }}</td>
+              <td>{{ row.course_code }} &mdash; {{ row.course_title }}</td>
+              <td>{{ row.credits }}</td>
+              <td>{{ row.marks if row.marks is not none else "-" }}</td>
+              <td>{{ row.letter_grade if row.letter_grade is not none else "-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Not enrolled in any courses yet.</p>
+    {% endif %}
+  </div>
+
+  <h2>Attendance</h2>
+  <div class="card">
+    {% if attendance %}
+      <table>
+        <thead>
+          <tr><th>Course</th><th>Attendance %</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {% for row in attendance %}
+            <tr>
+              <td>{{ row.course_code }} &mdash; {{ row.course_title }}</td>
+              <td>{{ row.percentage }}%</td>
+              <td>
+                {% if row.low %}
+                  <span class="badge low">Below {{ threshold }}%</span>
+                {% else %}
+                  <span class="badge ok">OK</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No attendance recorded yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

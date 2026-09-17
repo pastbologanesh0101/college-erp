@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Admin login &middot; College ERP Clone{% endblock %}
+{% block content %}
+  <h1>Admin login</h1>
+  <div class="card">
+    <form class="stacked" method="post">
+      <label for="username">Username</label>
+      <input id="username" name="username" required autofocus>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required>
+
+      <button type="submit">Log in</button>
+    </form>
+  </div>
+{% endblock %}

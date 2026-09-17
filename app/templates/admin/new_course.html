@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Add course{% endblock %}
+{% block content %}
+  <h1>Add course</h1>
+  <div class="card">
+    <form class="stacked" method="post">
+      <label for="code">Code</label>
+      <input id="code" name="code" required>
+
+      <label for="title">Title</label>
+      <input id="title" name="title" required>
+
+      <label for="credits">Credits</label>
+      <input id="credits" name="credits" type="number" min="1" max="10" required>
+
+      <label for="department">Department</label>
+      <input id="department" name="department" required>
+
+      <button type="submit">Add course</button>
+    </form>
+  </div>
+{% endblock %}

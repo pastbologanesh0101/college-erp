@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Add student{% endblock %}
+{% block content %}
+  <h1>Add student</h1>
+  <div class="card">
+    <form class="stacked" method="post">
+      <label for="name">Name</label>
+      <input id="name" name="name" required>
+
+      <label for="roll_number">Roll number</label>
+      <input id="roll_number" name="roll_number" required>
+
+      <label for="department">Department</label>
+      <input id="department" name="department" required>
+
+      <label for="year">Year</label>
+      <input id="year" name="year" type="number" min="1" max="6" required>
+
+      <button type="submit">Add student</button>
+    </form>
+  </div>
+{% endblock %}

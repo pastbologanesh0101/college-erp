@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Home &middot; College ERP Clone{% endblock %}
+{% block content %}
+  <h1>Students</h1>
+  <div class="card">
+    {% if students %}
+      <table>
+        <thead>
+          <tr><th>Roll No.</th><th>Name</th><th>Department</th><th>Year</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+            <tr>
+              <td>{{ student.roll_number }}</td>
+              <td>{{ student.name }}</td>
+              <td>{{ student.department }}</td>
+              <td>{{ student.year }}</td>
+              <td><a href="{{ url_for('main.student_detail', student_id=student.id) }}">View</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No students yet. <a href="{{ url_for('auth.login') }}">Log in as admin</a> to add one.</p>
+    {% endif %}
+  </div>
+
+  <h1>Courses</h1>
+  <div class="card">
+    {% if courses %}
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Title</th><th>Credits</th><th>Department</th></tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+            <tr>
+              <td>{{ course.code }}</td>
+              <td>{{ course.title }}</td>
+              <td>{{ course.credits }}</td>
+              <td>{{ course.department }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No courses yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Record attendance{% endblock %}
+{% block content %}
+  <h1>Record attendance</h1>
+  <div class="card">
+    <form class="stacked" method="post">
+      <label for="student_id">Student</label>
+      <select id="student_id" name="student_id" required>
+        {% for student in students %}
+          <option value="{{ student.id }}">{{ student.roll_number }} &mdash; {{ student.name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="course_id">Course</label>
+      <select id="course_id" name="course_id" required>
+        {% for course in courses %}
+          <option value="{{ course.id }}">{{ course.code }} &mdash; {{ course.title }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="date">Date</label>
+      <input id="date" name="date" type="date" required>
+
+      <label for="present">
+        <input id="present" name="present" type="checkbox" style="display:inline;width:auto;">
+        Present
+      </label>
+
+      <button type="submit">Save attendance</button>
+    </form>
+  </div>
+{% endblock %}

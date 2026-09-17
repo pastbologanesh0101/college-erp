@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}College ERP Clone{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('main.index') }}">College ERP Clone</a>
+    <nav>
+      <a href="{{ url_for('main.index') }}">Home</a>
+      {% if g.admin %}
+        <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+        <a href="{{ url_for('auth.logout') }}">Log out ({{ g.admin }})</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Admin login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>College ERP Clone &mdash; scoped-down academic records core.</p>
+  </footer>
+</body>
+</html>

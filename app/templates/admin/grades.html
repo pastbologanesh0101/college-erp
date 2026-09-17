@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Record grade{% endblock %}
+{% block content %}
+  <h1>Record a grade</h1>
+  <div class="card">
+    <form class="stacked" method="post">
+      <label for="enrollment_id">Enrollment</label>
+      <select id="enrollment_id" name="enrollment_id" required>
+        {% for e in enrollments %}
+          <option value="{{ e.enrollment_id }}">
+            {{ e.student_name }} &mdash; {{ e.course_code }} ({{ e.semester }})
+          </option>
+        {% endfor %}
+      </select>
+
+      <label for="marks">Marks (0-100)</label>
+      <input id="marks" name="marks" type="number" min="0" max="100" step="0.1" required>
+
+      <button type="submit">Save grade</button>
+    </form>
+  </div>
+
+  <p>Grade scale: O (90+) = 10, A+ (80-89) = 9, A (70-79) = 8, B+ (60-69) = 7,
+     B (50-59) = 6, C (40-49) = 5, F (&lt;40) = 0.</p>
+{% endblock %}
