@@ -9,6 +9,7 @@ hostel, library, etc.).
 ## Table of contents
 
 - [Modules covered](#modules-covered)
+- [Data model](#data-model)
 - [Project layout](#project-layout)
 - [Running it locally](#running-it-locally)
 - [Example usage](#example-usage)
@@ -47,6 +48,29 @@ hostel, library, etc.).
 - **Admin area** — a simple session-based login (`/admin/login`, no RBAC,
   a single admin role) gates the pages for adding students/courses,
   enrolling students, recording attendance, and recording grades.
+
+## Data model
+
+`app/schema.sql` defines six tables, and the relationships between them
+drive most of the domain logic in `app/models.py`:
+
+`student` and `course` are independent root entities (unique on
+`roll_number` and `code` respectively). `enrollment` is the join between
+them — a student can have many enrollments, a course can have many
+enrollments, but the trio `(student_id, course_id, semester)` is `UNIQUE`,
+which is what makes duplicate-enrollment rejection a database-level
+guarantee rather than just an application-level check. `grade` has a
+one-to-one relationship with `enrollment` (`enrollment_id` is `UNIQUE`) —
+a grade only exists once that enrollment is created, and `record_grade()`
+upserts it rather than allowing duplicates. `attendance` instead has a
+one-to-many relationship with the `(student, course)` pair: many dated
+attendance rows roll up into the percentage `compute_attendance_percentage()`
+calculates, which is why GPA is computed by walking
+`enrollment JOIN course JOIN grade` (only *graded* enrollments count)
+while attendance is computed by walking `attendance JOIN course` directly
+(no enrollment required — attendance can be taken before a grade exists).
+`admin_user` is unrelated to the academic tables entirely; it only backs
+the session-based login in `app/auth.py`.
 
 ## Project layout
 
