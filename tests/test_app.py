@@ -53,6 +53,20 @@ def test_duplicate_enrollment_rejected(db):
     assert len(models.list_enrollments_for_student(db, student_id)) == 1
 
 
+def test_enroll_student_rejects_nonexistent_student_or_course(db):
+    course_id = _make_course(db)
+    student_id = _make_student(db)
+
+    with pytest.raises(models.ValidationError):
+        models.enroll_student(db, student_id=999999, course_id=course_id, semester="2026-Fall")
+
+    with pytest.raises(models.ValidationError):
+        models.enroll_student(db, student_id=student_id, course_id=999999, semester="2026-Fall")
+
+    # neither bad call should have created an enrollment row
+    assert models.list_enrollments_for_student(db, student_id) == []
+
+
 # ---------------------------------------------------------------------------
 # Attendance
 # ---------------------------------------------------------------------------
@@ -86,6 +100,16 @@ def test_low_attendance_flagged_below_threshold(db):
     summary = models.attendance_summary_for_student(db, student_id, threshold=75.0)
     assert summary[0]["low"] is True
     assert summary[0]["percentage"] == 25.0
+
+
+def test_attendance_percentage_none_without_records(db):
+    student_id = _make_student(db)
+    course_id = _make_course(db)
+
+    pct = models.compute_attendance_percentage(db, student_id, course_id)
+    assert pct is None
+    # is_attendance_low must treat "no data" as "not low", not a false positive
+    assert models.is_attendance_low(pct) is False
 
 
 def test_attendance_at_or_above_threshold_not_flagged(db):
