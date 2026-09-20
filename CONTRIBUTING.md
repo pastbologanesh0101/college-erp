@@ -44,6 +44,9 @@ fixture, HTTP-level via the `client` fixture for routes).
 
 ## Code style
 
+- The repo ships an `.editorconfig` (4-space indent and an 88-column
+  guideline for Python, 2-space for HTML/CSS/YAML) — most editors pick it
+  up automatically.
 - Match the existing style: small, single-purpose functions in
   `app/models.py` doing the actual data access/domain logic; routes in
   `app/routes.py` / `app/admin.py` stay thin and delegate to `models.py`.
