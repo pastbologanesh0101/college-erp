@@ -1,5 +1,5 @@
 """Public-facing views: home page, student detail, transcript."""
-from flask import Blueprint, abort, render_template
+from flask import Blueprint, abort, jsonify, render_template
 
 from app.db import get_db
 from app.models import (
@@ -12,6 +12,20 @@ from app.models import (
 )
 
 bp = Blueprint("main", __name__)
+
+
+@bp.route("/healthz")
+def healthz():
+    """Liveness/readiness check for load balancers and uptime monitors.
+
+    Returns 200 with {"status": "ok"} if the app can reach its database,
+    or 503 with {"status": "error"} otherwise.
+    """
+    try:
+        get_db().execute("SELECT 1").fetchone()
+    except Exception as exc:
+        return jsonify(status="error", detail=str(exc)), 503
+    return jsonify(status="ok"), 200
 
 
 @bp.route("/")

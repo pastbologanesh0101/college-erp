@@ -232,6 +232,12 @@ def test_transcript_aggregates_all_courses_correctly(db):
 # HTTP layer: views, admin auth
 # ---------------------------------------------------------------------------
 
+def test_healthz_returns_ok_status(client):
+    response = client.get("/healthz")
+    assert response.status_code == 200
+    assert response.get_json() == {"status": "ok"}
+
+
 def test_index_page_lists_students(client, db):
     _make_student(db, roll_number="R042")
 

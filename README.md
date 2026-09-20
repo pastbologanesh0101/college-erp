@@ -86,6 +86,9 @@ variables before the first run if you want different credentials.)
 7. View the student's transcript and computed CGPA at
    `/students/<id>/transcript`, and their per-course attendance percentage
    (with low-attendance flag) at `/students/<id>`.
+8. Check `/healthz` for a JSON liveness/readiness probe (`{"status": "ok"}`
+   with a 200, or `{"status": "error", ...}` with a 503 if the database is
+   unreachable) — useful behind a load balancer or uptime monitor.
 
 ## Running the tests
 
