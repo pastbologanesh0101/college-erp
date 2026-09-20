@@ -108,6 +108,33 @@ views, and rejection of invalid grade input.
 `.github/workflows/tests.yml` runs the full test suite on every push and
 pull request against Python 3.11 and 3.12.
 
+## Troubleshooting / FAQ
+
+- **"Invalid username or password" with the documented `admin` / `admin123`
+  credentials.** The default admin account is only seeded the *first* time
+  `create_app()` initializes the database (i.e. when
+  `instance/college_erp.sqlite` doesn't exist yet). If you set
+  `ADMIN_USERNAME` / `ADMIN_PASSWORD` on a later run, or reset the env vars
+  after the database already exists, the account keeps whatever
+  username/password it was originally seeded with. Delete
+  `instance/college_erp.sqlite` and restart the app to reseed it against
+  your current environment variables.
+
+- **Enrolling a student fails with "Student is already enrolled in this
+  course for this semester."** This is intentional, not a bug — enrollment
+  is unique per `(student, course, semester)` (enforced by both
+  `app/models.enroll_student` and a `UNIQUE` constraint in
+  `app/schema.sql`). If the student needs a different outcome for that
+  course, enroll them under a different `semester` value, or record the
+  grade against the existing enrollment instead of creating a new one.
+
+- **I changed `app/schema.sql` but the app still uses the old table
+  shape.** `create_app()` only runs `init_db()` (which drops and recreates
+  every table) when `instance/college_erp.sqlite` doesn't already exist —
+  it never re-runs it against an existing database. Delete
+  `instance/college_erp.sqlite` (this destroys all data) or run
+  `flask --app run init-db` to apply schema changes.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
