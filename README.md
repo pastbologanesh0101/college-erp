@@ -6,6 +6,17 @@ essentials of enrollment, attendance, and grading that a real college ERP's
 academic module would handle, without the surrounding bureaucracy (fees,
 hostel, library, etc.).
 
+## Table of contents
+
+- [Modules covered](#modules-covered)
+- [Project layout](#project-layout)
+- [Running it locally](#running-it-locally)
+- [Example usage](#example-usage)
+- [Running the tests](#running-the-tests)
+- [CI](#ci)
+- [Troubleshooting / FAQ](#troubleshooting--faq)
+- [License](#license)
+
 ## Modules covered
 
 - **Students** — roll number, name, department, year.
