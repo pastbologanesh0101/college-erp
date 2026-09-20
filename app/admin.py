@@ -45,6 +45,8 @@ def new_student():
             )
             flash("Student added.")
             return redirect(url_for("admin.dashboard"))
+        except ValidationError as exc:
+            flash(str(exc))
         except Exception as exc:
             flash(f"Could not add student: {exc}")
 

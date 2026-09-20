@@ -45,6 +45,17 @@ def marks_to_grade(marks):
 # ---------------------------------------------------------------------------
 
 def create_student(db, name, roll_number, department, year):
+    """Create a student.
+
+    Raises ValidationError if roll_number is already taken -- surfacing a
+    clear message instead of letting the underlying UNIQUE constraint
+    raise a raw sqlite3.IntegrityError.
+    """
+    if get_student_by_roll_number(db, roll_number) is not None:
+        raise ValidationError(
+            f"A student with roll number '{roll_number}' already exists."
+        )
+
     cur = db.execute(
         "INSERT INTO student (name, roll_number, department, year) "
         "VALUES (?, ?, ?, ?)",
@@ -57,6 +68,12 @@ def create_student(db, name, roll_number, department, year):
 def get_student(db, student_id):
     return db.execute(
         "SELECT * FROM student WHERE id = ?", (student_id,)
+    ).fetchone()
+
+
+def get_student_by_roll_number(db, roll_number):
+    return db.execute(
+        "SELECT * FROM student WHERE roll_number = ?", (roll_number,)
     ).fetchone()
 
 

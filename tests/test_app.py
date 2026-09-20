@@ -25,6 +25,20 @@ def _make_course(db, code="CS101", credits=4):
 
 
 # ---------------------------------------------------------------------------
+# Students
+# ---------------------------------------------------------------------------
+
+def test_create_student_rejects_duplicate_roll_number(db):
+    _make_student(db, roll_number="R123")
+
+    with pytest.raises(models.ValidationError):
+        models.create_student(db, "Someone Else", "R123", "ECE", 1)
+
+    # only the original student was persisted
+    assert len(models.list_students(db)) == 1
+
+
+# ---------------------------------------------------------------------------
 # Enrollment
 # ---------------------------------------------------------------------------
 
