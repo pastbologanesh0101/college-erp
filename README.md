@@ -52,7 +52,7 @@ app/
   static/style.css  plain CSS
 tests/
   test_app.py       unit tests (Flask test client + direct model calls)
-.github/workflows/tests.yml   CI: runs the test suite on Python 3.11 & 3.12
+.github/workflows/tests.yml   CI: runs the test suite on Python 3.11, 3.12 & 3.13
 ```
 
 ## Running it locally
@@ -106,7 +106,7 @@ views, and rejection of invalid grade input.
 ## CI
 
 `.github/workflows/tests.yml` runs the full test suite on every push and
-pull request against Python 3.11 and 3.12.
+pull request against Python 3.11, 3.12, and 3.13.
 
 ## Troubleshooting / FAQ
 
